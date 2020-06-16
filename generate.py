@@ -23,13 +23,13 @@ def generate_heart_rate():
 def get_datetime_days_ago(days):
     return datetime.now() - timedelta(days=days)
 
-def generate_observations(patient_id, number_of_observations):
+def generate_heart_rate_observations(patient_id, number_of_observations):
     for i in range(number_of_observations):
         effective_date = get_datetime_days_ago(number_of_observations - i - 1)
         heart_rate = generate_heart_rate()
-        yield create_observation(patient_id, heart_rate, effective_date)
+        yield create_heart_rate_observation(patient_id, heart_rate, effective_date)
 
-def create_observation(patient_id, heart_rate, effective_date):
+def create_heart_rate_observation(patient_id, heart_rate, effective_date):
     # https://www.hl7.org/fhir/vitalsigns.html
     # https://www.hl7.org/fhir/heartrate.html
     return {
@@ -71,6 +71,6 @@ if __name__ == "__main__":
     # Call random.seed(x) if we need to generate consistent results.
 
     fhir_server = "http://hapi.fhir.org/baseR4" # Just for testing
-    for observation in generate_observations("Patient/example", 1):
+    for observation in generate_heart_rate_observations("Patient/example", 1):
         print(json.dumps(observation))
         # print(persist_observation_to_server(fhir_server, observation))
