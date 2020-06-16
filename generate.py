@@ -31,6 +31,8 @@ def create_observation(patient_id, heart_rate, effective_date):
     # https://www.hl7.org/fhir/vitalsigns.html
     # https://www.hl7.org/fhir/heartrate.html
     return {
+        "resourceType": "Observation",
+        "status": "final",
         "subject": {"reference": patient_id},
         "code": {
             "coding": [{
@@ -41,7 +43,7 @@ def create_observation(patient_id, heart_rate, effective_date):
         },
         "category": [{
             "coding": [{
-                "system": "http://hl7.org/fhir/ValueSet/observation-category",
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
                 "code": "vital-signs"
             }]
         }],
