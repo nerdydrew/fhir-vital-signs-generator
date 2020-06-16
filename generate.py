@@ -3,6 +3,8 @@
 import json
 import random
 from datetime import datetime, timedelta
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 def generate_random(mean, standard_deviation, minimum=None, maximum=None):
     """Generates a random number according to a normal distribution."""
@@ -54,11 +56,21 @@ def create_observation(patient_id, heart_rate, effective_date):
             "system": "http://unitsofmeasure.org",
             "code": "/min"
         }
-    };
+    }
 
+def persist_observation_to_server(fhir_server_base_url, observation):
+    observation_url = "{}/Observation".format(fhir_server_base_url)
+    body = json.dumps(observation).encode("utf8")
+    headers = {
+        "Content-Type": "application/fhir+json"
+    }
+    request = Request(observation_url, body, headers)
+    return urlopen(request).read().decode()
 
 if __name__ == "__main__":
     # Call random.seed(x) if we need to generate consistent results.
 
-    for x in generate_observations("Patient/123", 2):
-        print(json.dumps(x))
+    fhir_server = "http://hapi.fhir.org/baseR4" # Just for testing
+    for observation in generate_observations("Patient/example", 1):
+        print(json.dumps(observation))
+        # print(persist_observation_to_server(fhir_server, observation))
