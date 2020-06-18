@@ -43,7 +43,8 @@ def create_heart_rate_observation(patient_id, heart_rate, effective_date):
     return {
         "resourceType": "Observation",
         "status": "final",
-        "subject": {"reference": patient_id},
+        #"subject": {"reference": patient_id},
+        "subject": {"reference": "053d12a2-8887-4b62-aa07-a245f99bd974"},
         "code": {
             "coding": [{
                 "system": "http://loinc.org",
